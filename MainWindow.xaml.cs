@@ -280,6 +280,7 @@ namespace Pop_Stefana_Lab5
                     phoneNumbersView.Source = queryPhoneNumbers.ToList();
                     btnNew.IsEnabled = true;
                     btnEdit.IsEnabled = true;
+                    btnDelete.IsEnabled = true;
                     btnSave.IsEnabled = false;
                     btnCancel.IsEnabled = false;
                     lstPhones.IsEnabled = true;
