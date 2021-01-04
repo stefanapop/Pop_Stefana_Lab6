@@ -38,6 +38,8 @@ namespace Pop_Stefana_Lab5
         ActionState action = ActionState.Nothing;
         Binding txtPhoneNumberBinding = new Binding();
         Binding txtSubscriberBinding = new Binding();
+        Binding txtContractValueBinding = new Binding();
+        Binding txtContractDateBinding = new Binding();
 
         public MainWindow()
         {
@@ -47,8 +49,12 @@ namespace Pop_Stefana_Lab5
             queryPhoneNumbers = (from p in ctx.PhoneNumbers select p);
             txtPhoneNumberBinding.Path = new PropertyPath("Phonenum");
             txtSubscriberBinding.Path = new PropertyPath("Subscriber");
+            txtContractValueBinding.Path = new PropertyPath("Contract_value");
+            txtContractDateBinding.Path = new PropertyPath("Contract_date");
             txtPhoneNumber.SetBinding(TextBox.TextProperty, txtPhoneNumberBinding);
             txtSubscriber.SetBinding(TextBox.TextProperty, txtSubscriberBinding);
+            txtContractValue.SetBinding(TextBox.TextProperty, txtContractValueBinding);
+            txtContractDate.SetBinding(TextBox.TextProperty, txtContractDateBinding);
             phoneNumbersView =
 ((CollectionViewSource)(this.FindResource("phoneNumbersViewSource")));
             phoneNumbersView.Source = queryPhoneNumbers.ToList();
@@ -83,7 +89,6 @@ namespace Pop_Stefana_Lab5
             btnNew.IsEnabled = false;
             btnEdit.IsEnabled = false;
             btnDelete.IsEnabled = false;
-
             btnSave.IsEnabled = true;
             btnCancel.IsEnabled = true;
             lstPhones.IsEnabled = false;
@@ -91,10 +96,16 @@ namespace Pop_Stefana_Lab5
             btnNext.IsEnabled = false;
             txtPhoneNumber.IsEnabled = true;
             txtSubscriber.IsEnabled = true;
+            txtContractValue.IsEnabled = true;
+            txtContractDate.IsEnabled = true;
             BindingOperations.ClearBinding(txtPhoneNumber, TextBox.TextProperty);
             BindingOperations.ClearBinding(txtSubscriber, TextBox.TextProperty);
+            BindingOperations.ClearBinding(txtContractValue, TextBox.TextProperty);
+            BindingOperations.ClearBinding(txtContractDate, TextBox.TextProperty);
             txtPhoneNumber.Text = "";
             txtSubscriber.Text = "";
+            txtContractValue.Text = "";
+            txtContractDate.Text = "";
             Keyboard.Focus(txtPhoneNumber);
         }
 
@@ -103,6 +114,8 @@ namespace Pop_Stefana_Lab5
             action = ActionState.Edit;
             string tempPhonenum = txtPhoneNumber.Text.ToString();
             string tempSubscriber = txtSubscriber.Text.ToString();
+            string tempContractValue = txtContractValue.Text.ToString();
+            string tempContractDate = txtContractDate.Text.ToString();
             btnNew.IsEnabled = false;
             btnEdit.IsEnabled = false;
             btnDelete.IsEnabled = false;
@@ -113,10 +126,16 @@ namespace Pop_Stefana_Lab5
             btnNext.IsEnabled = false;
             txtPhoneNumber.IsEnabled = true;
             txtSubscriber.IsEnabled = true;
+            txtContractValue.IsEnabled = true;
+            txtContractDate.IsEnabled = true;
             BindingOperations.ClearBinding(txtPhoneNumber, TextBox.TextProperty);
             BindingOperations.ClearBinding(txtSubscriber, TextBox.TextProperty);
+            BindingOperations.ClearBinding(txtContractValue, TextBox.TextProperty);
+            BindingOperations.ClearBinding(txtContractDate, TextBox.TextProperty);
             txtPhoneNumber.Text = tempPhonenum;
             txtSubscriber.Text = tempSubscriber;
+            txtContractValue.Text = tempContractValue;
+            txtContractDate.Text = tempContractDate;
             Keyboard.Focus(txtPhoneNumber);
         }
 
@@ -125,6 +144,8 @@ namespace Pop_Stefana_Lab5
             action = ActionState.Delete;
             string tempPhonenum = txtPhoneNumber.Text.ToString();
             string tempSubscriber = txtSubscriber.Text.ToString();
+            string tempContractValue = txtContractValue.Text.ToString();
+            string tempContractDate = txtContractDate.Text.ToString();
             btnNew.IsEnabled = false;
             btnEdit.IsEnabled = false;
             btnDelete.IsEnabled = false;
@@ -135,9 +156,12 @@ namespace Pop_Stefana_Lab5
             btnNext.IsEnabled = false;
             BindingOperations.ClearBinding(txtPhoneNumber, TextBox.TextProperty);
             BindingOperations.ClearBinding(txtSubscriber, TextBox.TextProperty);
+            BindingOperations.ClearBinding(txtContractValue, TextBox.TextProperty);
+            BindingOperations.ClearBinding(txtContractDate, TextBox.TextProperty);
             txtPhoneNumber.Text = tempPhonenum;
             txtSubscriber.Text = tempSubscriber;
-
+            txtContractValue.Text = tempContractValue;
+            txtContractDate.Text = tempContractDate;
         }
 
         private void btnCancel_Click(object sender, RoutedEventArgs e)
@@ -145,7 +169,7 @@ namespace Pop_Stefana_Lab5
             action = ActionState.Nothing;
             btnNew.IsEnabled = true;
             btnEdit.IsEnabled = true;
-            btnEdit.IsEnabled = true;
+            btnDelete.IsEnabled = true;
             btnSave.IsEnabled = false;
             btnCancel.IsEnabled = false;
             lstPhones.IsEnabled = true;
@@ -153,8 +177,12 @@ namespace Pop_Stefana_Lab5
             btnNext.IsEnabled = true;
             txtPhoneNumber.IsEnabled = false;
             txtSubscriber.IsEnabled = false;
+            txtContractValue.IsEnabled = false;
+            txtContractDate.IsEnabled = false;
             txtPhoneNumber.SetBinding(TextBox.TextProperty, txtPhoneNumberBinding);
             txtSubscriber.SetBinding(TextBox.TextProperty, txtSubscriberBinding);
+            txtContractValue.SetBinding(TextBox.TextProperty, txtContractValueBinding);
+            txtContractDate.SetBinding(TextBox.TextProperty, txtContractDateBinding);
         }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
@@ -168,7 +196,9 @@ namespace Pop_Stefana_Lab5
                     phoneNumber = new PhoneNumber()
                     {
                         Phonenum = txtPhoneNumber.Text.Trim(),
-                        Subscriber = txtSubscriber.Text.Trim()
+                        Subscriber = txtSubscriber.Text.Trim(),
+                        Contract_value = Int32.Parse(txtContractValue.Text.Trim()),
+                        Contract_date = Convert.ToDateTime(txtContractDate.Text.Trim())
                     };
                     //adaugam entitatea nou creata in context
                     ctx.PhoneNumbers.Add(phoneNumber);
@@ -179,6 +209,8 @@ namespace Pop_Stefana_Lab5
                 {
                     MessageBox.Show(ex.Message);
                 }
+                phoneNumbersView.Source = queryPhoneNumbers.ToList();
+
                 btnNew.IsEnabled = true;
                 btnEdit.IsEnabled = true;
                 btnSave.IsEnabled = false;
@@ -189,6 +221,8 @@ namespace Pop_Stefana_Lab5
                 btnNext.IsEnabled = true;
                 txtPhoneNumber.IsEnabled = false;
                 txtSubscriber.IsEnabled = false;
+                txtContractValue.IsEnabled = false;
+                txtContractDate.IsEnabled = false;
             }
             else
                 if (action == ActionState.Edit)
@@ -198,8 +232,10 @@ namespace Pop_Stefana_Lab5
                         phoneNumber = (PhoneNumber)lstPhones.SelectedItem;
                         phoneNumber.Phonenum = txtPhoneNumber.Text.Trim();
                         phoneNumber.Subscriber = txtSubscriber.Text.Trim();
-                        //salvam modificarile
-                        ctx.SaveChangesClientWins();
+                        phoneNumber.Contract_value = Int32.Parse(txtContractValue.Text.Trim());
+                        phoneNumber.Contract_date = Convert.ToDateTime(txtContractDate.Text.Trim());
+                    //salvam modificarile
+                    ctx.SaveChangesClientWins();
                     }
                     catch (DataException ex)
                     {
@@ -223,9 +259,13 @@ namespace Pop_Stefana_Lab5
                     btnNext.IsEnabled = true;
                     txtPhoneNumber.IsEnabled = false;
                     txtSubscriber.IsEnabled = false;
+                    txtContractValue.IsEnabled = false;
+                    txtContractDate.IsEnabled = false;
                     txtPhoneNumber.SetBinding(TextBox.TextProperty, txtPhoneNumberBinding);
                     txtSubscriber.SetBinding(TextBox.TextProperty, txtSubscriberBinding);
-                }
+                    txtContractValue.SetBinding(TextBox.TextProperty, txtContractValueBinding);
+                    txtContractDate.SetBinding(TextBox.TextProperty, txtContractDateBinding);
+            }
                 else if (action == ActionState.Delete)
                 {
                      try {
@@ -247,8 +287,12 @@ namespace Pop_Stefana_Lab5
                     btnNext.IsEnabled = true;
                     txtPhoneNumber.IsEnabled = false;
                     txtSubscriber.IsEnabled = false;
+                    txtContractValue.IsEnabled = false;
+                    txtContractDate.IsEnabled = false;
                     txtPhoneNumber.SetBinding(TextBox.TextProperty, txtPhoneNumberBinding);
                     txtSubscriber.SetBinding(TextBox.TextProperty, txtSubscriberBinding);
+                    txtContractValue.SetBinding(TextBox.TextProperty, txtContractValueBinding);
+                    txtContractDate.SetBinding(TextBox.TextProperty, txtContractDateBinding);
             }
         }
 
